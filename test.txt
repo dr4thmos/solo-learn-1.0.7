@@ -1,0 +1,6 @@
+python3 main_pretrain.py \
+    --config-path scripts/pretrain/imagenet-100/ \
+    --config-name barlow.yaml
+
+
+python3 main_pretrain.py --config-path scripts/pretrain/custom --config-name byol.yaml

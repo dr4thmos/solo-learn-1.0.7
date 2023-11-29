@@ -1,0 +1,49 @@
+defaults:
+  - _self_
+  - wandb: private.yaml
+  - augmentations: asymmetric_sinh_minmax_asinh.yaml
+  - override hydra/hydra_logging: disabled
+  - override hydra/job_logging: disabled
+
+# disable hydra outputs
+hydra:
+  output_subdir: null
+  run:
+    dir: .
+
+name: "DEBUG-byol-banner-robin-linear-mixed"
+pretrained_feature_extractor: "./trained_models/byol/ddn5f8w5/byol-norm-aug-ddn5f8w5-ep=275.ckpt"
+backbone:
+  name: "resnet18"
+pretrain_method: "byol"
+data:
+  dataset: "robin"
+  train_path: "../2-ROBIN"
+  val_path: "../2-ROBIN"
+  format: "image_folder"
+  num_workers: 8
+optimizer:
+  name: "sgd"
+  batch_size: 256
+  lr: 0.3
+  weight_decay: 0
+scheduler:
+  name: "step"
+  lr_decay_steps: [10, 80]
+checkpoint:
+  enabled: True
+  dir: "trained_models"
+  frequency: 25
+auto_resume:
+  enabled: True
+
+performance:
+  disable_channel_last: True
+
+# overwrite PL stuff
+max_epochs: 100
+devices: [0, 1]
+sync_batchnorm: True
+accelerator: "gpu"
+strategy: auto
+precision: 16

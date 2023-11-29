@@ -1,0 +1,11 @@
+python3 main_knn.py \
+    --dataset rgz \
+    --train_data_path "../RGZ-D1-smorph-dataset" \
+    --val_data_path "../RGZ-D1-smorph-dataset" \
+    --batch_size 16 \
+    --num_workers 4 \
+    --pretrained_checkpoint_dir "./trained_models/byol/ddn5f8w5/" \
+    --k 1 2 5 10 20 50 100 200 \
+    --temperature 0.01 0.02 0.05 0.07 0.1 0.2 0.5 1 \
+    --feature_type backbone projector \
+    --distance_function euclidean cosine
