@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo.png" width="250"/>
+  <img src="media/logo.jpeg" width="250"/>
 </p>
 
 # solo-learn-radio
@@ -60,18 +60,9 @@ A fork of awesome solo-learn library from v.1.0.7. A library of self-supervised 
 * [ConvNeXt](https://arxiv.org/abs/2201.03545)
 
 ### Evaluation
-* Online linear evaluation via stop-gradient for easier debugging and prototyping (optionally available for the momentum backbone as well).
 * Standard offline linear evaluation.
-* Online and offline K-NN evaluation.
-* Automatic feature space visualization with UMAP.
-
-### Training tricks
-* All the perks of PyTorch Lightning (mixed precision, gradient accumulation, clipping, and much more).
-* Channel last conversion
-* Multi-cropping dataloading following [SwAV](https://arxiv.org/abs/2006.09882):
-    * **Note**: currently, only SimCLR, BYOL and SwAV support this.
-* Exclude batchnorm and biases from weight decay and LARS.
-* No LR scheduler for the projection head (as in SimSiam).
+* Offline K-NN evaluation.
+* Feature space visualization with UMAP.
 
 ### Logging
 * Metric logging on the cloud with [WandB](https://wandb.ai/site)
