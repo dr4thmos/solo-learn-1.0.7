@@ -1,0 +1,51 @@
+K_fold: 10
+accelerator: gpu
+auto_resume:
+  enabled: false
+backbone:
+  name: resnet18
+checkpoint:
+  dir: trained_models
+  enabled: false
+  frequency: 25
+data:
+  balancing_strategy: balanced_fixed
+  datalist: info.json
+  dataset: robin
+  format: image_folder
+  num_workers: 16
+  sample_size: 1650
+  train_path: ../2-ROBIN
+  val_path: ../2-ROBIN
+defaults:
+- _self_
+- wandb: private.yaml
+- augmentations: asymmetric_mixed.yaml
+- override hydra/hydra_logging: disabled
+- override hydra/job_logging: disabled
+devices:
+- 0
+hydra:
+  output_subdir: null
+  run:
+    dir: .
+max_epochs: 100
+name: __linear__robin__mixed__byol_banner_aug_minmax_model_resnet18__K10__balanced_fixed__info__
+optimizer:
+  batch_size: 256
+  lr: 0.3
+  name: sgd
+  weight_decay: 0
+performance:
+  disable_channel_last: true
+precision: 16
+pretrain_method: byol
+pretrained_feature_extractor: trained_models/byol/rfkiis97/byol_banner_aug_minmax_model_resnet18-rfkiis97-ep=600.ckpt
+repetitions: 1
+scheduler:
+  lr_decay_steps:
+  - 10
+  - 80
+  name: step
+strategy: auto
+sync_batchnorm: true

@@ -1,0 +1,65 @@
+# Train
+- norm_channels:
+    enabled: True
+    ch0: [power, squared, sinh]
+    ch1: [minmax]
+    ch2: [log, sqrt, asinh] # histogram, sigma, ..., gamma?
+  pad2square:
+    enabled: True
+  rrc:
+    enabled: True
+    crop_min_scale: 0.95
+    crop_max_scale: 1.0
+  color_jitter:
+    prob: 0.
+    brightness: 0.
+    contrast: 0.
+    saturation: 0.
+    hue: 0.
+  grayscale:
+    prob: 0.
+  gaussian_blur:
+    prob: 0.
+  solarization:
+    prob: 0.
+  equalization:
+    prob: 0.
+  horizontal_flip:
+    prob: 0.5
+  vertical_flip:
+    prob: 0.5
+  crop_size: 224
+  num_crops: 1
+
+# Val
+- norm_channels:
+    enabled: True
+    ch0: [sinh]
+    ch1: [minmax]
+    ch2: [asinh] # histogram, sigma, ..., gamma?
+  pad2square:
+    enabled: True
+  rrc:
+    enabled: False
+    crop_min_scale: 1.
+    crop_max_scale: 1.
+  color_jitter:
+    prob: 0.
+    brightness: 0.
+    contrast: 0.
+    saturation: 0.
+    hue: 0.
+  grayscale:
+    prob: 0.
+  gaussian_blur:
+    prob: 0.
+  solarization:
+    prob: 0.
+  equalization:
+    prob: 0.
+  horizontal_flip:
+    prob: 0.
+  vertical_flip:
+    prob: 0.
+  crop_size: 224
+  num_crops: 1
