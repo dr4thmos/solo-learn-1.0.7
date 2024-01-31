@@ -56,7 +56,9 @@ def main(cfg: DictConfig):
     OmegaConf.set_struct(cfg, False)
     cfg = parse_cfg(cfg)
 
-    K = 10
+    K = cfg.K_fold
+
+    print(f"K-fold cross validation: {K}")
 
     backbone_model = BaseMethod._BACKBONES[cfg.backbone.name]
 
@@ -200,8 +202,8 @@ def main(cfg: DictConfig):
 
             trainer = Trainer(**trainer_kwargs)
 
-            print(len(train_loader))
-            print(len(val_loader))
+            print(f"Mini-batches train: {len(train_loader)}")
+            print(f"Mini-batches val: {len(val_loader)}")
             trainer.fit(model, train_loader, val_loader, ckpt_path=ckpt_path)
             accuracy_values.append(trainer.logged_metrics["val_acc-top1"].item())
             

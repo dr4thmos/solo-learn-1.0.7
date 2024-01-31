@@ -21,7 +21,7 @@ for run in runs:
     # Controlla se il nome della run corrisponde al pattern e se la run è terminata
     if run.state == "finished" and "__" in run.name:
         # Se la run non è nel dizionario o se è più recente di quella memorizzata
-        if run.name not in latest_runs or run.start_time > latest_runs[run.name].start_time:
+        if run.name not in latest_runs or run.createdAt > latest_runs[run.name].createdAt:
             # Memorizza la run
             latest_runs[run.name] = run
             
