@@ -1,0 +1,42 @@
+#!/bin/bash
+#SBATCH --account=cin_extern02_1
+#SBATCH --nodes=2
+#SBATCH --ntasks-per-node=4
+#SBATCH --gres=gpu:4
+######SBATCH --gpus-per-node=4
+#SBATCH --cpus-per-task=8
+#SBATCH --error=openstl_%j.err
+#SBATCH --output=openstl_%j.out
+#SBATCH --partition=boost_usr_prod
+#SBATCH --time=01:00:00
+
+GPUS_PER_NODE=4
+
+echo "NODELIST="${SLURM_NODELIST}
+master_addr=$(scontrol show hostnames "$SLURM_JOB_NODELIST" | head -n 1)
+export MASTER_ADDR=$master_addr
+echo "MASTER_ADDR="$MASTER_ADDR
+echo "SLURM_NTASKS="$SLURM_NTASKS
+NTASKS_PER_NODE=$((SLURM_NTASKS / SLURM_JOB_NUM_NODES))
+echo "NTASKS_PER_NODE="$NTASKS_PER_NODE
+export WORLD_SIZE=$((GPUS_PER_NODE * SLURM_NNODES))
+echo "WORLD_SIZE=$WORLD_SIZE"
+MASTER_PORT=11111
+
+module load cuda cudnn nccl openmpi
+source /leonardo_scratch/large/userexternal/apilzer0/openstl_venv/bin/activate
+
+CFG="configs/taxibj/SimVP.py"
+WORK_DIR=$(echo ${CFG%.*} | sed -e "s/configs/work_dirs/g")/
+echo "$WORK_DIR"
+
+# line below can be useful for debug with CUDA_LAUNCH_BLOCKING=1
+# export NCCL_DEBUG=INFO
+
+# PILZ TODO: check if these two bad boys can help performance
+#  -bind-to none -map-by slot 
+mpirun -np $WORLD_SIZE -x MASTER_ADDR=$MASTER_ADDR -x MASTER_PORT=$MASTER_PORT python3 /leonardo_scratch/large/userexternal/apilzer0/OpenSTL/tools/train.py --dist \
+      --config_file $CFG \
+      --ex_name $WORK_DIR \
+      --seed 42 --launcher="mpi" -d taxibj --lr 1e-3 --batch_size 8 --epoch 20
+

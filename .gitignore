@@ -1,10 +1,12 @@
+eval*
+
 # tensorboard dir
 runs/
 
 # wandb dir
 wandb/
 wandb*/
-!scripts/**
+scripts/**
 
 # umap dir
 auto_umap/
