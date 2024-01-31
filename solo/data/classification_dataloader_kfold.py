@@ -312,18 +312,25 @@ class MiraBest(data.Dataset):
         return fmt_str
 
 class RGZ(Dataset):
-    def __init__(self, root, transform=None, datalist="info_full_downsampled_min_wo_nan.json"):
+    #def __init__(self, root, transform=None, datalist="info_full_downsampled_min_wo_nan.json"):
+    #def __init__(self, root="../2-ROBIN", transform=None, data_dict= None, datalist="info_full_downsampled_min.json", balancing_strategy="as_is", sample_size = None, downsample_size = None, perc= None, oversample_size = None):
+    def __init__(self, root="../RGZ-D1-smorph-dataset", transform=None, data_dict=None,  datalist="info_wo_nan.json", balancing_strategy="as_is", sample_size = None, downsample_size = None, perc= None, oversample_size = None):
         # info_full_test_downsampled_min_05_wo_nan.json
         # info_full_train_downsampled_min_05_wo_nan.json
         self.root = Path(root)
         self.transform = transform
-        self.info = self.load_info(datalist)
+        self.sample_size = int(sample_size * perc)
+        if data_dict is None:
+            self.info = self.load_info(datalist)
+        else:
+            self.info = self.balance_dict(data_dict, balancing_strategy)
+        self.strategy = balancing_strategy
         self.images = list(self.info["target_path"])
         self.class_to_idx = self.enumerate_classes()
         self.class_names = self.class_name_list()
         self.classes = self.class_names
         self.num_classes = len(self.class_to_idx)
-        self.datalist = datalist
+        #self.datalist = datalist
 
         #classes, class_to_idx = self.find_classes(self.root)
         #samples = self.make_dataset(self.root, class_to_idx, extensions, is_valid_file)
@@ -336,6 +343,21 @@ class RGZ(Dataset):
         self.samples = list(zip(list(self.info["target_path"]), [self.class_to_idx[s] for s in list(self.info["source_type"])]))
         self.targets = [s[1] for s in self.samples]
         #print(self.info.describe())
+
+    def balance_dict(self, data_dict, balance_strategy):
+        if balance_strategy == "as_is":
+            return data_dict
+        elif balance_strategy == "balanced_fixed":
+            stratified_df = data_dict.groupby('source_type', group_keys=True)
+            df_balanced = stratified_df.apply(lambda x: x.sample(self.sample_size, replace=True))
+            df_balanced = df_balanced.reset_index(level="source_type", drop=True).sort_index()
+            df_balanced = df_balanced.reset_index(drop=True)
+            return df_balanced
+        elif balance_strategy == "balanced_downsampled":
+            stratified_df = data_dict.groupby('source_type', group_keys=True)
+            df_downsampled = stratified_df.apply(lambda x: x.sample(int(stratified_df.size().min())))
+            df_downsampled = df_downsampled.reset_index(level="source_type", drop=True).sort_index()
+            return df_downsampled
 
     def class_name_list(self):
         return [cls_name for cls_name in self.info["source_type"].unique()]
@@ -833,9 +855,19 @@ def prepare_datasets(
         perc_val = 1. - perc_train
         train_dataset   = ROBIN(data_dict=train_data_dict,  transform=T_train,  balancing_strategy=balancing_strategy, sample_size=cfg.data.sample_size, perc=perc_train)
         val_dataset     = ROBIN(data_dict=val_data_dict,    transform=T_val,    balancing_strategy=balancing_strategy, sample_size=cfg.data.sample_size, perc=perc_val)
+        
     if dataset == "rgz":
+        perc_train = len(train_data_dict) / ( len(train_data_dict) + len(val_data_dict) ) 
+        perc_val = 1. - perc_train
+        train_dataset   = RGZ(data_dict=train_data_dict,  transform=T_train,  balancing_strategy=balancing_strategy, sample_size=cfg.data.sample_size, perc=perc_train)
+        val_dataset     = RGZ(data_dict=val_data_dict,    transform=T_val,    balancing_strategy=balancing_strategy, sample_size=cfg.data.sample_size, perc=perc_val)
+
+        """
         train_dataset   = RGZ(data_dict=train_data_dict,  transform=T_train,  balancing_strategy=balancing_strategy)
         val_dataset     = RGZ(data_dict=val_data_dict,    transform=T_val,    balancing_strategy=balancing_strategy)
+        """
+    print(f"Lenght train dataset: {len(train_dataset)}")
+    print(f"Lenght val dataset: {len(val_dataset)}")
     return train_dataset, val_dataset
 
 def prepare_dataloaders(
@@ -860,6 +892,7 @@ def prepare_dataloaders(
         num_workers=num_workers,
         pin_memory=True,
         drop_last=True,
+        persistent_workers=True
     )
     val_loader = DataLoader(
         val_dataset,
@@ -868,6 +901,7 @@ def prepare_dataloaders(
         num_workers=num_workers,
         pin_memory=True,
         drop_last=False,
+        persistent_workers=True
     )
     return train_loader, val_loader
 
