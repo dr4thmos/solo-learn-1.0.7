@@ -53,10 +53,10 @@ def generate_yaml_from_wandb(local_or_wandb, run_id, model_path, dataset, datase
     if finetune:
         optimizer= {
             "name": "adamw",
-            "batch_size": 512,
+            "batch_size": 256,
             "lr": 5e-4,
-            "weight_decay": 0.005,
-            "layer_decay": 0.75
+            "weight_decay": 0.,
+            "layer_decay": 0.
         }
         scheduler= {
             "name": "warmup_cosine",
@@ -78,7 +78,7 @@ def generate_yaml_from_wandb(local_or_wandb, run_id, model_path, dataset, datase
     if augmentations == "nomeanstd":
         aug_suffix = ""
     elif augmentations == "meanstd":
-        aug_suffix = "_meanstd.yaml"
+        aug_suffix = "_meanstd"
 
     finetune_text = "finetune" if finetune else "linear"
     name = f"__{finetune_text}__{dataset}__minmax__{pretrain_name}__K{K_fold_value}__{balancing_strategy}__{os.path.splitext(datalist)[0]}__"

@@ -6,9 +6,13 @@
 A fork of awesome solo-learn library from v.1.0.7. A library of self-supervised methods for unsupervised visual representation learning powered by PyTorch Lightning.
 **solo-learn [paper](#citation)**.
 
+This work add compatibility to radio astronomical datasets and functions to benchmark available methods on those use cases.
+
 ---
 
 ## News
+* Updated to include all4one method
+* Added fixed fold k-fold cross validation training script
 * Added k-fold cross validation
 * Added benchmark experiment generator
 * Added online balancing strategy
@@ -60,6 +64,7 @@ A fork of awesome solo-learn library from v.1.0.7. A library of self-supervised 
 * [ConvNeXt](https://arxiv.org/abs/2201.03545)
 
 ### Evaluation
+* Offline k-fold cross validation
 * Standard offline linear evaluation.
 * Offline K-NN evaluation.
 * Feature space visualization with UMAP.
@@ -140,6 +145,12 @@ For k-NN evaluation and UMAP visualization check the scripts in `scripts/{knn,um
 
 **NOTE:** Files try to be up-to-date and follow as closely as possible the recommended parameters of each paper, but check them before running.
 
+---
+
+## Evaluation and benchmark
+```bash
+sh _eval_pipeline.sh -d <dataset> -f <finetune<true|false>>
+```
 ---
 
 ## Tutorials

@@ -28,9 +28,6 @@ if args.dataset == "robin":
             # Scrivi la riga nel file di output
             output_file.write(line)
 if args.dataset == "rgz":
-    # Leggi i run_id da un file .txt
-    with open('model_lists.txt', 'r') as file:
-        run_ids = file.readlines()
 
     # Apre il file di output in modalità scrittura
     with open('gen_eval_exp_rgz.sh', 'w') as output_file:
