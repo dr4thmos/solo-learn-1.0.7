@@ -462,7 +462,10 @@ def build_transform_pipeline(dataset, cfg):
         augmentations.append(transforms.RandomHorizontalFlip(p=cfg.horizontal_flip.prob))
 
     augmentations.append(transforms.ToTensor())
-    #augmentations.append(transforms.Normalize(mean=mean, std=std))
+    if cfg.meanstd.enabled:
+        print(cfg.meanstd.mean)
+        print(cfg.meanstd.std)
+        augmentations.append(transforms.Normalize(mean=cfg.meanstd.mean, std=cfg.meanstd.std))
 
     augmentations = transforms.Compose(augmentations)
     return augmentations
