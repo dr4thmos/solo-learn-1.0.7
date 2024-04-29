@@ -332,7 +332,13 @@ class LinearModel(pl.LightningModule):
         else:
             out = self(X)["logits"]
             loss = F.cross_entropy(out, target)
-            acc1, acc2 = accuracy_at_k(out, target, top_k=(1, 2))
+            top_k_max = min(2, out.size(1))
+            print(out.size(1))
+            if top_k_max > 1:
+                acc1, acc2 = accuracy_at_k(out, target, top_k=(1, top_k_max))
+            else:
+                acc1 = accuracy_at_k(out, target, top_k=(1, top_k_max))
+                acc2 = 0.
             metrics.update({"loss": loss, "acc-top1": acc1, "acc-top2": acc2})
 
         return metrics

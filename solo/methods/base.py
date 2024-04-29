@@ -753,7 +753,8 @@ class BaseMomentumMethod(BaseMethod):
             logits = self.momentum_classifier(feats)
 
             loss = F.cross_entropy(logits, targets, ignore_index=-1)
-            acc1, acc5 = accuracy_at_k(logits, targets, top_k=(1, 5))
+            top_k_max = min(5, logits.size(1))
+            acc1, acc5 = accuracy_at_k(logits, targets, top_k=(1, top_k_max))
             out.update({"logits": logits, "loss": loss, "acc1": acc1, "acc5": acc5})
 
         return out
