@@ -21,7 +21,11 @@ _N_CLASSES_PER_DATASET = {
     "stl10": 10,
     "imagenet": 1000,
     "imagenet100": 100,
-    "rgz": 6
+    "rgz": 6,
+    "robin": 7,
+    "mirabest": 2,
+    "vlass": 5,
+    "frg": 4
 }
 
 
@@ -34,6 +38,9 @@ _SUPPORTED_DATASETS = [
     "custom",
     "rgz",
     "robin",
+    "mirabest",
+    "vlass",
+    "frg"
 ]
 
 

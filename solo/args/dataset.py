@@ -37,7 +37,11 @@ def dataset_args(parser: ArgumentParser):
         "imagenet",
         "imagenet100",
         "custom",
-        "rgz"
+        "rgz",
+        "robin",
+        "vlass",
+        "mirabest",
+        "frg"
     ]
 
     parser.add_argument("--dataset", choices=SUPPORTED_DATASETS, type=str, required=True)
