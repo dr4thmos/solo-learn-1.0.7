@@ -41,8 +41,8 @@ else
 fi
 
 # Creazione configurazione esperimenti
-sh "gen_eval_exp_$dataset.sh"
+sh "gen_eval_exp_${dataset}.sh"
 # Creazione linee di comando lanciare i job slurm per ogni esperimento
 sh "create_slurm_launcher.sh" -d $dataset -f $finetune
 # Lancio dei job slurm per ogni esperimento
-sh "slurm_$dataset_$eval_type.sh"
+sh "slurm_${dataset}_${eval_type}.sh"

@@ -61,8 +61,8 @@ if args.dataset == "mirabest":
             # Crea la riga con il run_id corrente
             line = f"python generate_eval_experiments.py --run_id {run_id} --dataset mirabest \
     --local_or_wandb wandb {finetune} --augmentations meanstd \
-    --dataset_path ../mirabest --devices 0 --num_workers 6 --datalist info.json \
-    --balancing_strategy as_is --sample_size 0 --K 1 --reps 1\n"
+    --dataset_path ../mirabest --devices 0 --num_workers 1 --datalist info.json \
+    --balancing_strategy as_is --sample_size 0 --K 1 --reps 5\n"
             # Scrivi la riga nel file di output
             output_file.write(line)
 if args.dataset == "frg":

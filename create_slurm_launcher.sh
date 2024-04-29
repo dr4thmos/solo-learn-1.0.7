@@ -5,7 +5,7 @@ dataset=""
 finetune="false"
 
 # Analizza gli argomenti dalla linea di comando utilizzando getopts
-while getopts ":d:f:m:" opt; do
+while getopts ":d:f:" opt; do
   case $opt in
     d)
       dataset="$OPTARG"
@@ -36,10 +36,10 @@ fi
 
 
 # Directory contenente i file YAML
-CONFIG_PATH="scripts/kfold/$eval_type/$dataset"
+CONFIG_PATH="scripts/kfold/${eval_type}/${dataset}"
 
 # File bash per lanciare i comandi
-OUTPUT_SCRIPT="slurm_$dataset_$eval_type.sh"
+OUTPUT_SCRIPT="slurm_${dataset}_${eval_type}.sh"
 
 # Crea o svuota il file di output
 > $OUTPUT_SCRIPT
