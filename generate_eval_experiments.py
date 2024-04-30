@@ -220,7 +220,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate yaml config file to validate the pretrained models")
     parser.add_argument("--local_or_wandb", type=str, required=True, help="Local or wandb")
     parser.add_argument("--augmentations", type=str, default="nomeanstd", help="Meanstd or not", choices=["meanstd", "nomeanstd"])
-    parser.add_argument("--run_id", required=True, help="wandb experiment ID")
+    parser.add_argument("--run_id", required=False, help="wandb experiment ID")
     parser.add_argument("--finetune", action=argparse.BooleanOptionalAction, help="Linear evaluation or finetuning")
     parser.add_argument("--model_path", type=pathlib.Path, default = "", required=False, help="Local model path")
     parser.add_argument("--devices", nargs="+", type=int, required=True, help="GPU devices list")
