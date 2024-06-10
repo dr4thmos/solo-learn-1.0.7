@@ -768,34 +768,6 @@ def build_cfg_pipeline(cfg):
 
     return {"T_train": T_train, "T_val": T_val}
 
-def build_rgz_pipeline():
-    """Builds augmentation pipelines for custom data.
-    If you want to do exoteric augmentations, you can just re-write this function.
-    Needs to return a dict with the same structure.
-    """
-    pipeline = {
-        "T_train": transforms.Compose(
-            [
-                #AddNormChannels(fixed=True),
-                transforms.Resize(224),
-                transforms.RandomHorizontalFlip(),
-                transforms.RandomVerticalFlip(),
-                transforms.ToTensor(),
-                #transforms.Normalize(mean=IMAGENET_DEFAULT_MEAN, std=IMAGENET_DEFAULT_STD),
-            ]
-        ),
-        "T_val": transforms.Compose(
-            [
-                #AddNormChannels(fixed=True),
-                transforms.Resize(224),
-                transforms.ToTensor(),
-                #transforms.Normalize(mean=IMAGENET_DEFAULT_MEAN, std=IMAGENET_DEFAULT_STD),
-            ]
-        ),
-    }
-    
-    return pipeline
-
 
 def prepare_transforms(dataset: str, cfg) -> Tuple[nn.Module, nn.Module]:
     """Prepares pre-defined train and test transformation pipelines for some datasets.
@@ -982,15 +954,21 @@ def prepare_dataloaders(
     Returns:
         Tuple[DataLoader, DataLoader]: training dataloader and validation dataloader.
     """
+    # Definire una regola per il drop_last
+    # Ora definisco:
+    # Se si perderebbero più di metà batch nell'ultima iterazione
+    # Allora tieni il batch
+    # (len(train_dataset) % batch_size) < (batch_size/2)
+
 
     train_loader = DataLoader(
         train_dataset,
         batch_size=batch_size,
         sampler=torch.utils.data.SubsetRandomSampler(train_idxs) if subsampler else None,
-        shuffle=False,
+        shuffle=True,
         num_workers=num_workers,
         pin_memory=True,
-        drop_last=True,
+        drop_last=(len(train_dataset) % batch_size) < (batch_size/2),
         persistent_workers=True
     )
     val_loader = DataLoader(
