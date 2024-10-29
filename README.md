@@ -2,19 +2,33 @@
   <img src="media/logo.jpeg" width="250"/>
 </p>
 
-# solo-learn-radio
-A fork of awesome solo-learn library from v.1.0.7. A library of self-supervised methods for unsupervised visual representation learning powered by PyTorch Lightning.
-**solo-learn [paper](#citation)**.
+# Solo Learn Radio - SLR
+This repository is an adaption of the outstanding **solo-learn** library v1.0.7, bringing new features to produce benchmark on radio astronomical images and reproduce the paper "Self-supervised learning for radio-astronomy source classification: a benchmark" - Oral presentation at PRRS 2024 hosted by ICPR in Kolkata.
 
-This work add compatibility to radio astronomical datasets and functions to benchmark available methods on those use cases.
+This work is being supported by ICSC.
+
+## Contents
+* General-purpose models for radio-astronomy
+* Benchmark code
+* Radio astronomical data classes
+* Radio astronomical data processing techniques
+* Experiment configurations
+
+This repository provides links to models trained using various self-supervised learning (SSL) techniques on different pretraining datasets.
+It provides che configurations used to reproduce experiments. Furthermore it provides the code for load and process radio-astronomical images.
+
+If you use this repository please consider to cite the original work  **solo-learn [paper](#citation)**.
 
 ---
 
 ## News
-* Updated to include all4one method
-* Added fixed fold k-fold cross validation training script
-* Added k-fold cross validation
+* Added feature extraction
+* Added runs summary
+* Updated to include all4one method (as in the most recent version of solo-learn)
+* Added k-fold cross validation (with fixed partition or generated at runtime)
 * Added benchmark experiment generator
+* Switch top5 to top2 accuracy and fix in case of 2 classes
+* Added support for baselines
 * Added online balancing strategy
 * Added specific augmentations for radio images
 * Added specific data classes for radio images
@@ -23,57 +37,46 @@ This work add compatibility to radio astronomical datasets and functions to benc
 
 ## Quickstart
 * Clone the repo
-* Download train dataset
-* Train a model (or download one)
-* Download test dataset
-* Eval the model
-* Plot latent space with classification
+* Obtain training/testing datasets (contact us: simone.riggi@inaf.it)
+* Use a pretrained model
+  * Evaluate with finetuning or linear evaluation
+  * Feature extraction
+  * Downstream task (e.g. classification)  
 
 ---
 
-## Training methods available
-* [Barlow Twins](https://arxiv.org/abs/2103.03230)
-* [BYOL](https://arxiv.org/abs/2006.07733)
-* [DeepCluster V2](https://arxiv.org/abs/2006.09882)
-* [DINO](https://arxiv.org/abs/2104.14294)
-* [MAE](https://arxiv.org/abs/2111.06377)
-* [MoCo V2+](https://arxiv.org/abs/2003.04297)
-* [MoCo V3](https://arxiv.org/abs/2104.02057)
-* [NNBYOL](https://arxiv.org/abs/2104.14548)
-* [NNCLR](https://arxiv.org/abs/2104.14548)
-* [NNSiam](https://arxiv.org/abs/2104.14548)
-* [ReSSL](https://arxiv.org/abs/2107.09282)
-* [SimCLR](https://arxiv.org/abs/2002.05709)
-* [SimSiam](https://arxiv.org/abs/2011.10566)
-* [Supervised Contrastive Learning](https://arxiv.org/abs/2004.11362)
-* [SwAV](https://arxiv.org/abs/2006.09882)
-* [VIbCReg](https://arxiv.org/abs/2109.00783)
-* [VICReg](https://arxiv.org/abs/2105.04906)
-* [W-MSE](https://arxiv.org/abs/2007.06346)
+## Training methods tested
+
+|      |      |
+|--------------|--------------|
+| [All4One](https://openaccess.thecvf.com/content/ICCV2023/html/Estepa_All4One_Symbiotic_Neighbour_Contrastive_Learning_via_Self-Attention_and_Redundancy_Reduction_ICCV_2023_paper.html)       | [BYOL](https://arxiv.org/abs/2006.07733)       |
+| [SimCLR](https://arxiv.org/abs/2002.05709)      | [SwAV](https://arxiv.org/abs/2006.09882)      |
+| [VICReg](https://arxiv.org/abs/2105.04906)       | [W-MSE](https://arxiv.org/abs/2007.06346)       |
 
 ---
 
-## Extra flavor
-
-### Backbones
+## Backbones Trained
 * [ResNet](https://arxiv.org/abs/1512.03385)
-* [WideResNet](https://arxiv.org/abs/1605.07146)
-* [ViT](https://arxiv.org/abs/2010.11929)
+
+## Backbones Available
 * [Swin](https://arxiv.org/abs/2103.14030)
 * [PoolFormer](https://arxiv.org/abs/2111.11418)
+* [WideResNet](https://arxiv.org/abs/1605.07146)
+* [ViT](https://arxiv.org/abs/2010.11929)
 * [ConvNeXt](https://arxiv.org/abs/2201.03545)
 
-### Evaluation
+## Evaluation
 * Offline k-fold cross validation
 * Standard offline linear evaluation.
 * Offline K-NN evaluation.
 * Feature space visualization with UMAP.
 
-### Logging
+## Logging
 * Metric logging on the cloud with [WandB](https://wandb.ai/site)
 * Custom model checkpointing with a simple file organization.
 
 ---
+
 ## Requirements
 * torch
 * torchvision
@@ -85,9 +88,6 @@ This work add compatibility to radio astronomical datasets and functions to benc
 * torchmetrics
 * scipy
 * timm
-
-**Optional**:
-* nvidia-dali
 * matplotlib
 * seaborn
 * pandas
@@ -99,28 +99,24 @@ This work add compatibility to radio astronomical datasets and functions to benc
 
 First clone the repo.
 
-Then, to install solo-learn with [Dali](https://github.com/NVIDIA/DALI) and/or UMAP support, use:
+Then, to install solo-learn with UMAP support, use:
 ```
-pip3 install .[dali,umap,h5] --extra-index-url https://developer.download.nvidia.com/compute/redist
+pip3 install .[umap]
 ```
 
-If no Dali/UMAP/H5 support is needed, the repository can be installed as:
+If no UMAP support is needed, the repository can be installed as:
 ```
 pip3 install .
 ```
 
 For local development:
 ```
-pip3 install -e .[umap,h5]
+pip3 install -e .[umap]
 # Make sure you have pre-commit hooks installed
 pre-commit install
 ```
 
-**NOTE:** if you are having trouble with dali, install it following their [guide](https://github.com/NVIDIA/DALI).
-
-**NOTE 2:** consider installing [Pillow-SIMD](https://github.com/uploadcare/pillow-simd) for better loading times when not using Dali.
-
-**NOTE 3:** Soon to be on pip.
+**NOTE:** consider installing [Pillow-SIMD](https://github.com/uploadcare/pillow-simd) for better loading times
 
 ---
 
@@ -143,8 +139,6 @@ After that, for offline linear evaluation, follow the examples in `scripts/linea
 
 For k-NN evaluation and UMAP visualization check the scripts in `scripts/{knn,umap}`.
 
-**NOTE:** Files try to be up-to-date and follow as closely as possible the recommended parameters of each paper, but check them before running.
-
 ---
 
 ## Evaluation and benchmark
@@ -153,18 +147,7 @@ sh _eval_pipeline.sh -d <dataset> -f <finetune<true|false>>
 ```
 ---
 
-## Tutorials
-
-Please, check out our [documentation](https://solo-learn.readthedocs.io/en/latest) and tutorials:
-* [Overview](https://solo-learn.readthedocs.io/en/latest/tutorials/overview.html)
-* [Offline linear eval](https://solo-learn.readthedocs.io/en/latest/tutorials/offline_linear_eval.html)
-* [Object detection](https://github.com/vturrisi/solo-learn/blob/main/downstream/object_detection/README.md)
-* [Adding a new method](https://github.com/vturrisi/solo-learn/blob/main/docs/source/tutorials/add_new_method.rst)
-* [Adding a new momentum method](https://github.com/vturrisi/solo-learn/blob/main/docs/source/tutorials/add_new_method_momentum.rst)
-* [Visualizing features with UMAP](https://github.com/vturrisi/solo-learn/blob/main/docs/source/tutorials/umap.rst)
-* [Offline k-NN](https://github.com/vturrisi/solo-learn/blob/main/docs/source/tutorials/knn.rst)
-
-If you want to contribute to solo-learn, make sure you take a look at [how to contribute](https://github.com/vturrisi/solo-learn/blob/main/.github/CONTRIBUTING.md) and follow the [code of conduct](https://github.com/vturrisi/solo-learn/blob/main/.github/CODE_OF_CONDUCT.md)
+## Tutorials?
 
 ---
 
@@ -175,21 +158,40 @@ All pretrained models avaiable can be downloaded directly via the tables below o
 
 ---
 
-## Results
+## Models available
 
-### Hulk
+Models pretrained on **curated dataset** and **resnet-18**:
 
-| Method       | Backbone | Epochs | Dali | Acc@1 | Acc@5 | Checkpoint |
-|--------------|:--------:|:------:|:----:|:--------------:|:--------------:|:----------:|
-| Barlow Twins | ResNet18 |  1000  |  :x: |      92.10     |     99.73      | [:link:](https://drive.google.com/drive/folders/1L5RAM3lCSViD2zEqLtC-GQKVw6mxtxJ_?usp=sharing) |
-| BYOL         | ResNet18 |  1000  |  :x: |      92.58     |     99.79      | [:link:](https://drive.google.com/drive/folders/1KxeYAEE7Ev9kdFFhXWkPZhG-ya3_UwGP?usp=sharing) |
+| Method  | Checkpoint | MiraBest| RGZ        |   MSRS    |      VLASS |
+|---------|:----------:|:-------:|:----------:|:---------:|:----------:|
+| All4one | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
+| Byol    | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
+| DINO    | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
+| SimCLR  | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
+| SwAV    | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
+| WMSE    | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
 
-### Robin
+Models pretrained on **curated dataset** and **resnet-50**:
 
-| Method       | Backbone | Epochs | Dali | Acc@1 | Acc@5 | Checkpoint |
-|--------------|:--------:|:------:|:----:|:--------------:|:--------------:|:----------:|
-| Barlow Twins | ResNet18 |  1000  |  :x: |      92.10     |     99.73      | [:link:](https://drive.google.com/drive/folders/1L5RAM3lCSViD2zEqLtC-GQKVw6mxtxJ_?usp=sharing) |
-| BYOL         | ResNet18 |  1000  |  :x: |      92.58     |     99.79      | [:link:](https://drive.google.com/drive/folders/1KxeYAEE7Ev9kdFFhXWkPZhG-ya3_UwGP?usp=sharing) |
+| Method  | Checkpoint | MiraBest| RGZ        |   MSRS    |      VLASS |
+|---------|:----------:|:-------:|:----------:|:---------:|:----------:|
+| All4one | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
+| Byol    | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
+| DINO    | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
+| SimCLR  | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
+| SwAV    | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
+| WMSE    | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
+
+Models pretrained on **uncurated dataset** and **resnet-18**:
+
+| Method  | Checkpoint | MiraBest| RGZ        |   MSRS    |      VLASS |
+|---------|:----------:|:-------:|:----------:|:---------:|:----------:|
+| All4one | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
+| Byol    | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
+| DINO    | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
+| SimCLR  | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
+| SwAV    | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
+| WMSE    | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
 
 ## Citation
 If you use solo-learn, please cite [paper](https://jmlr.org/papers/v23/21-1155.html):
