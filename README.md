@@ -151,47 +151,43 @@ sh _eval_pipeline.sh -d <dataset> -f <finetune<true|false>>
 
 ---
 
-## Model Zoo
-
-All pretrained models avaiable can be downloaded directly via the tables below or programmatically by running one of the following scripts ...
-`zoo/hulk.sh`, `zoo/banner.sh` and `zoo/imagenet.sh`.
-
----
-
-## Models available
+## Models availability
 
 Models pretrained on **curated dataset** and **resnet-18**:
 
-| Method  | Checkpoint | MiraBest| RGZ        |   MSRS    |      VLASS |
-|---------|:----------:|:-------:|:----------:|:---------:|:----------:|
-| All4one | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
-| Byol    | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
-| DINO    | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
-| SimCLR  | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
-| SwAV    | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
-| WMSE    | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
+| Method  | Checkpoint | MiraBest | RGZ | MSRS | VLASS |
+|---------|:----------:|:--------:|:---:|:----:|:-----:|
+| All4one | [60ffbwwo]() | 82.1 ± 0.5 | **79.4 ± 0.2** | **78.2 ± 3.9** | **77.2 ± 0.8** |
+| Byol    | [rfkiis97]() | 89.6 ± 0.4 | 77.6 ± 0.2 | 78.0 ± 4.2 | 76.2 ± 0.6 |
+| DINO    | [suikmnpg]() | 64.2 ± 0.4 | 69.2 ± 0.6 | 73.8 ± 3.8 | 66.6 ± 0.8 |
+| SimCLR  | [uiaz3umx]() | **91.0 ± 0.5** | 69.5 ± 0.5 | 73.7 ± 4.1 | 71.9 ± 1.1 |
+| SwAV    | [w6jni8a6]() | 72.9 ± 0.4 | 74.6 ± 0.7 | 74.8 ± 2.9 | 69.6 ± 1.3 |
+| WMSE    | [pm6qc199]() | 84.6 ± 0.0 | 70.6 ± 0.5 | 74.6 ± 4.6 | 70.6 ± 0.0 |
 
 Models pretrained on **curated dataset** and **resnet-50**:
 
-| Method  | Checkpoint | MiraBest| RGZ        |   MSRS    |      VLASS |
-|---------|:----------:|:-------:|:----------:|:---------:|:----------:|
-| All4one | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
-| Byol    | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
-| DINO    | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
-| SimCLR  | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
-| SwAV    | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
-| WMSE    | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
+| Method  | Checkpoint | MiraBest | RGZ | MSRS | VLASS |
+|---------|:----------:|:--------:|:---:|:----:|:-----:|
+| All4one | [hly1zogn]() | 88.5 ± 0.6 | **78.8 ± 0.2** | **77.1 ± 3.6** | **77.0 ± 0.4** |
+| Byol    | [xtulgzz6]() | **90.0 ± 0.5** | 78.6 ± 0.5 | 76.5 ± 4.8 | 76.8 ± 0.4 |
+| DINO    | [csn7idhy]() | 77.7 ± 1.1 | 70.2 ± 0.6 | 73.6 ± 3.5 | 67.7 ± 1.4 |
+| SimCLR  | [4j8zhz46]() | 85.8 ± 0.9 | 73.0 ± 0.1 | 71.7 ± 4.2 | 73.1 ± 0.9 |
+| SwAV    | [j1da6sjm]() | 82.3 ± 0.5 | 75.3 ± 0.2 | 74.4 ± 2.3 | 70.5 ± 0.5 |
+| WMSE    | [pwfb6a5c]() | 81.2 ± 0.5 | 74.7 ± 0.3 | 75.7 ± 4.4 | 72.6 ± 0.4 |
 
 Models pretrained on **uncurated dataset** and **resnet-18**:
 
-| Method  | Checkpoint | MiraBest| RGZ        |   MSRS    |      VLASS |
-|---------|:----------:|:-------:|:----------:|:---------:|:----------:|
-| All4one | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
-| Byol    | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
-| DINO    | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
-| SimCLR  | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
-| SwAV    | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
-| WMSE    | [:link:]() |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |82.1&plusmn;0.5 |
+| Method  | Checkpoint | MiraBest | RGZ | MSRS | VLASS |
+|---------|:----------:|:--------:|:---:|:----:|:-----:|
+| All4one | [vdexi5ak]() | 75.6 ± 0.8 | 68.4 ± 0.5 | **74.2 ± 3.8** | **70.5 ± 0.4** |
+| Byol    | [uja9qvb7]() | 79.6 ± 0.4 | **72.6 ± 0.9** | 73.5 ± 3.0 | 69.6 ± 0.2 |
+| DINO    | [g0x94tkz]() | 83.6 ± 0.0 | 67.4 ± 1.0 | 71.4 ± 3.6 | 69.0 ± 0.8 |
+| SimCLR  | [n11oftk9]() | **84.8 ± 0.7** | 68.2 ± 0.3 | 72.0 ± 3.4 | 68.1 ± 0.8 |
+| SwAV    | [9xtqjn3m]() | 74.4 ± 0.8 | 65.2 ± 0.9 | 73.2 ± 3.1 | 62.5 ± 0.6 |
+| WMSE    | [w46gzvi8]() | 64.6 ± 0.4 | 60.2 ± 0.5 | 69.6 ± 3.5 | 60.5 ± 0.6 |
+
+### Models
+Models are available using provided link on tables above, or you could download those via command line using sh scripts provided in utilities. The trained models should  be placed in trained_models folder, if not check your model path setting.
 
 ## Citation
 If you use solo-learn, please cite [paper](https://jmlr.org/papers/v23/21-1155.html):
